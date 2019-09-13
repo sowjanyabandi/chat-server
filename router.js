@@ -13,6 +13,16 @@ function factory(stream) {
     stream.init(request, response);
   }
   router.get("/stream", onStream);
+
+  function onMessage(request, response) {
+    const { text } = request.body;
+    messages.push(text);
+    const data = JSON.stringify(messages);
+    stream.send(data);
+    return response.send(text);
+  }
+  router.post("/message", onMessage);
+
   return router;
 }
 
